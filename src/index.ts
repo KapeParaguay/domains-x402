@@ -15,6 +15,39 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'domains-x402', timestamp: new Date().toISOString() });
 });
 
+// Skill Manifest (for AgentCash marketplace)
+app.get('/skill.md', (req, res) => {
+  res.type('text/markdown').sendFile(`${process.cwd()}/SKILL.md`);
+});
+
+app.get('/skill.json', (req, res) => {
+  res.json({
+    name: 'domains-x402',
+    slug: 'domains-x402',
+    description: 'Autonomous domain registration for AI agents. x402 USDC payments. No setup required.',
+    version: '1.0.0',
+    author: 'Fabrizio Augustin',
+    license: 'MIT',
+    repository: 'https://github.com/KapeParaguay/domains-x402',
+    endpoints: {
+      search: 'POST /x402/domains/search',
+      buyCrypto: 'POST /x402/domains/buy-crypto',
+      status: 'GET /x402/domains/buy-crypto/:orderId/status'
+    },
+    pricing: {
+      model: 'per-transaction',
+      currency: 'USDC',
+      network: 'base',
+      examples: {
+        dev: '12.99',
+        com: '18.12',
+        app: '16.99'
+      }
+    },
+    tags: ['domains', 'x402', 'usdc', 'base', 'commerce']
+  });
+});
+
 // x402 Routes
 app.use('/x402', x402Routes);
 
